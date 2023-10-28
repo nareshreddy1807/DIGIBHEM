@@ -1,0 +1,202 @@
+lass BankAccount:
+    def _init_(self, account_number, pin, account_holder, balance=0, transactions=[]):
+        self.account_number = account_number
+        self.pin = pin
+        self.account_holder = account_holder
+        self.balance = balance
+        self.transactions = transactions
+    def deposit(self, amount):
+        self.balance += amount
+        self.transactions.append(f"Deposited {amount} units")
+        return f"Deposited {amount} units. Current balance: {self.balance}"
+    def withdraw(self, amount):
+        if self.balance >= amount:
+            self.balance -= amount
+            self.transactions.append(f"Withdrew {amount} units")
+            return f"Withdrew {amount} units. Current balance: {self.balance}"
+        else:
+            return "Insufficient funds. Withdrawal unsuccessful."
+
+    def check_balance(self):
+        return f"Account balance for {self.account_holder}: {self.balance}"
+
+    def show_transaction_history(self):
+        return "\n".join(self.transactions)
+
+
+class Bank:
+    def _init_(self):
+        self.accounts = {}
+
+    def create_account(self, account_number, pin, account_holder):
+        if account_number not in self.accounts:
+            account = BankAccount(account_number, pin, account_holder)
+            self.accounts[account_number] = account
+            return account
+        else:
+            return "Account number already exists. Please choose a different number."
+
+    def authenticate(self, account_number, pin):
+        if account_number in self.accounts and self.accounts[account_number].pin == pin:
+            return self.accounts[account_number]
+        else:
+            return None
+
+    def change_pin(self, account_number, old_pin, new_pin):
+        if account_number in self.accounts and self.accounts[account_number].pin == old_pin:
+            self.accounts[account_number].pin = new_pin
+            return "PIN changed successfully."
+        else:
+            return "Invalid account number or PIN. PIN change unsuccessful."
+
+    def delete_account(self, account_number, pin):
+        if account_number in self.accounts and self.accounts[account_number].pin == pin:
+            del self.accounts[account_number]
+            return "Account deleted successfully."
+        else:
+            return "Invalid account number or PIN. Account deletion unsuccessful."
+
+
+# Example usage of the Bank and BankAccount classes
+if _name_ == "_main_":
+    bank = Bank()
+
+    while True:
+        print("\nMenu:")
+        print("1. Create Account")
+        print("2. Authenticate")
+        print("3. Change PIN")
+        print("4. Delete Account")
+        print("5. Quit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            account_holder = input("Enter account holder name: ")
+            result = bank.create_account(account_number, pin, account_holder)
+            print(result)
+
+        elif choice == "2":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            authenticated_account = bank.authenticate(account_number, pin)
+            if authenticated_account:
+                print("Authentication successful.")
+                while True:
+                    print("\nAuthenticated Menu:")
+                    print("1. Deposit")
+                    print("2. Withdraw")
+                    print("3. Check Balance")
+                    print("4. View Transaction History")
+                    print("5. Go Back")
+                    sub_choice = input("Enter your choice: ")
+
+                    if sub_choice == "1":
+                        amount = float(input("Enter amount to deposit: "))
+                        print(authenticated_account.deposit(amount))
+
+                    elif sub_choice == "2":
+                        amount = float(input("Enter amount to withdraw: "))
+                        print(authenticated_account.withdraw(amount))
+
+                    elif sub_choice == "3":
+                        print(authenticated_account.check_balance())
+
+                    elif sub_choice == "4":
+                        print(authenticated_account.show_transaction_history())
+
+                    elif sub_choice == "5":
+                        break
+
+            else:
+                print("Authentication failed. Invalid account number or PIN.")
+
+        elif choice == "3":
+            account_number = input("Enter account number: ")
+            old_pin = input("Enter old PIN: ")
+            new_pin = input("Enter new PIN: ")
+            result = bank.change_pin(account_number, old_pin, new_pin)
+            print(result)
+
+        elif choice == "4":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            result = bank.delete_account(account_number, pin)
+            print(result)
+
+        elif choice == "5":
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+    while True:
+        print("\nMenu:")
+        print("1. Create Account")
+        print("2. Authenticate")
+        print("3. Change PIN")
+        print("4. Delete Account")
+        print("5. Quit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            account_holder = input("Enter account holder name: ")
+            result = bank.create_account(account_number, pin, account_holder)
+            print(result)
+
+        elif choice == "2":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            authenticated_account = bank.authenticate(account_number, pin)
+            if authenticated_account:
+                print("Authentication successful.")
+                while True:
+                    print("\nAuthenticated Menu:")
+                    print("1. Deposit")
+                    print("2. Withdraw")
+                    print("3. Check Balance")
+                    print("4. View Transaction History")
+                    print("5. Go Back")
+                    sub_choice = input("Enter your choice: ")
+
+                    if sub_choice == "1":
+                        amount = float(input("Enter amount to deposit: "))
+                        print(authenticated_account.deposit(amount))
+
+                    elif sub_choice == "2":
+                        amount = float(input("Enter amount to withdraw: "))
+                        print(authenticated_account.withdraw(amount))
+
+                    elif sub_choice == "3":
+                        print(authenticated_account.check_balance())
+
+                    elif sub_choice == "4":
+                        print(authenticated_account.show_transaction_history())
+
+                    elif sub_choice == "5":
+                        break
+
+            else:
+                print("Authentication failed. Invalid account number or PIN.")
+
+        elif choice == "3":
+            account_number = input("Enter account number: ")
+            old_pin = input("Enter old PIN: ")
+            new_pin = input("Enter new PIN: ")
+            result = bank.change_pin(account_number, old_pin, new_pin)
+            print(result)
+
+        elif choice == "4":
+            account_number = input("Enter account number: ")
+            pin = input("Enter PIN: ")
+            result = bank.delete_account(account_number, pin)
+            print(result)
+
+        elif choice == "5":
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
